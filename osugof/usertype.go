@@ -1,4 +1,4 @@
-package osugo
+package osugof
 
 // UserType indicates if a given user's value was their username or user ID.
 //

@@ -1,4 +1,4 @@
-package osugo
+package osugof
 
 // Language is an ID that represents a given language.
 type Language int

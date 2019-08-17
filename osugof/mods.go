@@ -1,4 +1,4 @@
-package osugo
+package osugof
 
 type Mod int
 

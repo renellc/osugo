@@ -1,8 +1,33 @@
 package osugo
 
-import "net/http"
+import (
+	"io/ioutil"
+	"net/http"
+	"strings"
+)
 
 type OsuClient struct {
 	apiKey string
 	client *http.Client
+}
+
+func (c OsuClient) sendRequest(endpoint string, q query) ([]byte, error) {
+	key, err := q.constructQuery(c.apiKey)
+	if err != nil {
+		return nil, err
+	}
+
+	url := []string{"https://osu.ppy.sh/api/", endpoint, "?", key}
+	bytes, err := c.client.Get(strings.Join(url, ""))
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := ioutil.ReadAll(bytes.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	defer bytes.Body.Close()
+	return data, nil
 }

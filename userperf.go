@@ -12,9 +12,10 @@ type BestScore struct {
 	ScoreID      string  `json:"score_id"`
 	AchievedDate string  `json:"date"`
 	PP           float32 `json:"pp,string"`
-	scoreBase
+	ScoreBase
 }
 
+// GetUserBest gets the data on a specified user's top plays.
 func (c OsuClient) GetUserBest(q UserPerfQuery) ([]BestScore, error) {
 	data, err := c.sendRequest("get_user_best", q)
 	if err != nil {
@@ -33,7 +34,23 @@ func (c OsuClient) GetUserBest(q UserPerfQuery) ([]BestScore, error) {
 // RecentScore represents a score in a user's recent plays.
 type RecentScore struct {
 	BeatmapID string
-	scoreBase
+	ScoreBase
+}
+
+// GetUserRecent gets the data on a specified user's recent plays.
+func (c OsuClient) GetUserRecent(q UserPerfQuery) ([]RecentScore, error) {
+	data, err := c.sendRequest("get_user_recent", q)
+	if err != nil {
+		return nil, err
+	}
+
+	scores := []RecentScore{}
+	jErr := json.Unmarshal(data, &scores)
+	if jErr != nil {
+		return nil, jErr
+	}
+
+	return scores, nil
 }
 
 // UserPerfQuery is a query that's used to get either a user's best scores or a user's recent

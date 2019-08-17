@@ -56,10 +56,14 @@ func (c OsuClient) GetUserRecent(q UserPerfQuery) ([]RecentScore, error) {
 // UserPerfQuery is a query that's used to get either a user's best scores or a user's recent
 // scores.
 type UserPerfQuery struct {
-	User  string
-	Mode  GameMode
+	// REQUIRED - Specifies a username or user ID to get plays from
+	User string
+	// OPTIONAL - The game mode. Defaults to osu!.
+	Mode GameMode
+	// OPTIONAL - The amount of results. Defaults to 10.
 	Limit int
-	Type  UserType
+	// OPTIONAL - Specifies whether the value in `User` is a Username or and ID.
+	Type UserType
 }
 
 func (upq UserPerfQuery) constructQuery(key string) (string, error) {

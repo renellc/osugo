@@ -1,16 +1,16 @@
 package osugo
 
-// Genre represents the genre a given song is categorized under.
+// Genre is an ID represents the genre a given song is categorized under.
 type Genre int
 
 const (
-	Any Genre = iota
+	AnyGenre Genre = iota
 	Unspecified
 	VideoGame
 	Anime
 	Rock
 	Pop
-	Other
+	OtherGenre
 	Novelty
 	HipHop Genre = iota + 1 // For some reason 8 was skipped. ??
 	Electronic

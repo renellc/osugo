@@ -1,4 +1,4 @@
-package osugof
+package osugo
 
 // GameMode represents the game mode for a given score, beatmap, or query.
 type GameMode int

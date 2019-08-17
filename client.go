@@ -11,6 +11,15 @@ type OsuClient struct {
 	client *http.Client
 }
 
+// InitClient creates a new OsuClient to make requests with.
+func InitClient(key string) *OsuClient {
+	c := OsuClient{
+		apiKey: key,
+		client: &http.Client{},
+	}
+	return &c
+}
+
 func (c OsuClient) sendRequest(endpoint string, q query) ([]byte, error) {
 	key, err := q.constructQuery(c.apiKey)
 	if err != nil {

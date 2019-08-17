@@ -1,4 +1,4 @@
-package osugof
+package osugo
 
 // GameMode represents the game mode for a given score, beatmap, or query.
 type GameMode int
@@ -12,6 +12,8 @@ const (
 	CtB
 	// Mania represents the osu!mania game mode.
 	Mania
+	// Any represents all of the game modes.
+	Any
 )
 
 // GetName gets the string represenation for a GameMode.

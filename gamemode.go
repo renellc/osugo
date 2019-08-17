@@ -12,6 +12,8 @@ const (
 	CtB
 	// Mania represents the osu!mania game mode.
 	Mania
+	// Any represents all of the game modes.
+	Any
 )
 
 // GetName gets the string represenation for a GameMode.

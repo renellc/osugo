@@ -1,5 +1,10 @@
 package osugo
 
+import (
+	"errors"
+	"net/url"
+)
+
 // Event is a struct that represents a recent event the user has done. This is related to a user
 // setting a new top play (and maybe unlocking achievements?).
 type Event struct {
@@ -42,4 +47,47 @@ type UserQuery struct {
 	Mode      GameMode
 	Type      UserType
 	EventDays int
+}
+
+func (u UserQuery) constructQuery(key string) (string, error) {
+	validateErr := u.validateQuery()
+	if validateErr != nil {
+		return "", nil
+	}
+
+	reqURL := url.Values{}
+	reqURL.Add("k", key)
+	reqURL.Add("u", u.User)
+	reqURL.Add("m", string(u.Mode))
+
+	if u.Type != "" {
+		reqURL.Add("type", string(u.Type))
+	}
+
+	if u.EventDays == 0 {
+		reqURL.Add("event_days", string(1))
+	} else {
+		reqURL.Add("event_days", string(u.EventDays))
+	}
+
+	return reqURL.Encode(), nil
+}
+
+func (u UserQuery) validateQuery() error {
+	var err error
+
+	if u.User == "" {
+		err = errors.New("User value must be provided")
+	}
+
+	if u.Mode > 3 {
+		err = errors.New("GameMode provided is not supported by this query")
+	}
+
+	if u.EventDays < 0 || u.EventDays > 31 {
+		err = errors.New("EventDays value not valid. Either leave EventDays blank or set a value" +
+			"between 1 and 31")
+	}
+
+	return err
 }

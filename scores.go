@@ -1,6 +1,7 @@
 package osugo
 
 import (
+	"encoding/json"
 	"errors"
 	"net/url"
 )
@@ -23,6 +24,22 @@ type ScoresQuery struct {
 	Mods      int
 	Type      UserType
 	Limit     int
+}
+
+// GetScores gets a list of scores for a specified beatmap.
+func (c OsuClient) GetScores(q ScoresQuery) ([]Score, error) {
+	res, err := c.sendRequest("get_scores", q)
+	if err != nil {
+		return nil, err
+	}
+
+	scores := []Score{}
+	jErr := json.Unmarshal(res, &scores)
+	if jErr != nil {
+		return nil, jErr
+	}
+
+	return scores, nil
 }
 
 func (s ScoresQuery) constructQuery(key string) (string, error) {

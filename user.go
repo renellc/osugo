@@ -90,9 +90,7 @@ func (u UserQuery) constructQuery(key string) (string, error) {
 		reqURL.Add("type", string(u.Type))
 	}
 
-	if u.EventDays == 0 {
-		reqURL.Add("event_days", string(1))
-	} else {
+	if u.EventDays > 0 {
 		reqURL.Add("event_days", string(u.EventDays))
 	}
 

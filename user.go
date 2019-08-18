@@ -1,6 +1,7 @@
 package osugo
 
 import (
+	"encoding/json"
 	"errors"
 	"net/url"
 )
@@ -39,6 +40,31 @@ type User struct {
 	TotalSecondsPlayed uint    `json:"total_seconds_played,string"`
 	CountryRank        uint    `json:"pp_country_rank,string"`
 	Events             []Event `json:"events"`
+}
+
+// GetUser gets the osu! data for a specified user.
+func (c OsuClient) GetUser(q UserQuery) (*User, error) {
+	res, err := c.sendRequest("get_user", q)
+	if err != nil {
+		return nil, err
+	}
+
+	users := []User{}
+	jErr := json.Unmarshal(res, &users)
+	if jErr != nil {
+		return nil, jErr
+	}
+
+	// get_users returns an empty array when the User value provided in the query is not a valid
+	// user or if the Type value given conflicts with the value given in User. In this case,
+	// return nil for the *User value
+	if len(users) == 0 {
+		return nil, nil
+	}
+
+	// get_users returns an array, but the array will always have one result so we just return the
+	// first result in the array.
+	return &users[0], nil
 }
 
 // UserQuery is used to fetch user information.

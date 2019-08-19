@@ -32,8 +32,8 @@ type ScoresQuery struct {
 	Limit int
 }
 
-// GetScores gets a list of scores for a specified beatmap.
-func (c OsuClient) GetScores(q ScoresQuery) ([]BeatmapScore, error) {
+// GetBeatmapScores gets a list of scores for a specified beatmap.
+func (c OsuClient) GetBeatmapScores(q ScoresQuery) ([]BeatmapScore, error) {
 	res, err := c.sendRequest("get_scores", q)
 	if err != nil {
 		return nil, err

@@ -1,6 +1,7 @@
 package osugo
 
 import (
+	"encoding/json"
 	"errors"
 	"net/url"
 )
@@ -10,6 +11,22 @@ import (
 type MultiLobby struct {
 	Info  MatchInfo   `json:"match"`
 	Games []MultiGame `json:"games"`
+}
+
+// GetMultiMatch gets information about a multiplayer match in osu!.
+func (c OsuClient) GetMultiMatch(q MultiLobbyQuery) (*MultiLobby, error) {
+	res, err := c.sendRequest("get_match", q)
+	if err != nil {
+		return nil, err
+	}
+
+	lobby := MultiLobby{}
+	jErr := json.Unmarshal(res, &lobby)
+	if jErr != nil {
+		return nil, jErr
+	}
+
+	return &lobby, nil
 }
 
 // MatchInfo contains the meta information for a multiplayer lobby in osu!.
@@ -34,6 +51,18 @@ type MultiGame struct {
 	TeamType    int               `json:"team_type,string"`
 	Mods        int               `json:"mods,string"`
 	Scores      []MultiMatchScore `json:"scores"`
+}
+
+// GetWinCriteriaName gets the string value for a win criteria type.
+func (m MultiGame) GetWinCriteriaName() string {
+	crit := []string{"Score", "Accuracy", "Combo", "ScoreV2"}
+	return crit[m.WinCriteria]
+}
+
+// GetTeamTypeName gets the string value for the type of match played in a multiplayer lobby.
+func (m MultiGame) GetTeamTypeName() string {
+	types := []string{"Head to Head", "Tag Co-op", "Team VS", "Tag Team VS"}
+	return types[m.TeamType]
 }
 
 // MultiMatchScore contains the information for a score set in a multiplayer lobby in osu!.

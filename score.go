@@ -1,9 +1,10 @@
 package osugo
 
-// ScoreBase is used internally amongst the Score, RecentScore, BestScore, and MultiScore structs.
-// Because all of the response from get_user_best, get_user_recent, get_match, and get_scores share
-// virtually the same fields for the score, this struct was created to be used amongts all of them.
-type ScoreBase struct {
+// Score is used internally amongst the BeatmapScore, RecentScore, BestScore, and MultiScore
+// structs. Because all of the response from get_user_best, get_user_recent, get_match, and
+// get_scores share virtually the same fields for the score, this struct was created to be used
+// to avoid code duplication.
+type Score struct {
 	UserID      string   `json:"user_id"`
 	Score       int      `json:"score,string"`
 	MaxCombo    int      `json:"maxcombo,string"`

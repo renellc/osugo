@@ -6,14 +6,14 @@ import (
 	"net/url"
 )
 
-// Score is a struct that contains osu! data for a given score.
-type Score struct {
+// BeatmapScore is a struct that contains osu! data for a given score.
+type BeatmapScore struct {
 	ScoreID         string   `json:"score_id"`
 	Username        string   `json:"username"`
 	AchievedDate    string   `json:"date"`
 	PP              float32  `json:"pp,string"`
 	ReplayAvailable JSONBool `json:"replay_available,string"`
-	ScoreBase
+	Score
 }
 
 // ScoresQuery is used to fetch the scores set for a specified beatmap.
@@ -33,13 +33,13 @@ type ScoresQuery struct {
 }
 
 // GetScores gets a list of scores for a specified beatmap.
-func (c OsuClient) GetScores(q ScoresQuery) ([]Score, error) {
+func (c OsuClient) GetScores(q ScoresQuery) ([]BeatmapScore, error) {
 	res, err := c.sendRequest("get_scores", q)
 	if err != nil {
 		return nil, err
 	}
 
-	scores := []Score{}
+	scores := []BeatmapScore{}
 	jErr := json.Unmarshal(res, &scores)
 	if jErr != nil {
 		return nil, jErr

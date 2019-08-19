@@ -12,7 +12,7 @@ type BestScore struct {
 	ScoreID      string  `json:"score_id"`
 	AchievedDate string  `json:"date"`
 	PP           float32 `json:"pp,string"`
-	ScoreBase
+	Score
 }
 
 // GetUserBest gets the data on a specified user's top plays.
@@ -34,7 +34,7 @@ func (c OsuClient) GetUserBest(q UserPerfQuery) ([]BestScore, error) {
 // RecentScore represents a score in a user's recent plays.
 type RecentScore struct {
 	BeatmapID string
-	ScoreBase
+	Score
 }
 
 // GetUserRecent gets the data on a specified user's recent plays.

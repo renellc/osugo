@@ -1,5 +1,10 @@
 package osugo
 
+import (
+	"errors"
+	"net/url"
+)
+
 // MultiLobby represents a multiplayer lobby in osu!. This contains the match meta information, as
 // well as the multiple games that are played within that lobby.
 type MultiLobby struct {
@@ -37,4 +42,29 @@ type MultiMatchScore struct {
 	LobbyTeam int      `json:"team,string"`
 	DidPass   JSONBool `json:"pass,string"`
 	Score
+}
+
+// MultiLobbyQuery contains the various parameters used to get the data for a multiplayer lobby in
+// osu!.
+type MultiLobbyQuery struct {
+	LobbyID string
+}
+
+func (m MultiLobbyQuery) constructQuery(key string) (string, error) {
+	validateErr := m.validateQuery()
+	if validateErr != nil {
+		return "", validateErr
+	}
+
+	reqURL := url.Values{}
+	reqURL.Add("k", key)
+	reqURL.Add("mp", m.LobbyID)
+	return reqURL.Encode(), nil
+}
+
+func (m MultiLobbyQuery) validateQuery() error {
+	if m.LobbyID == "" {
+		return errors.New("No match ID value provided")
+	}
+	return nil
 }

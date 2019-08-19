@@ -15,5 +15,5 @@ type ScoreBase struct {
 	Hits50      int      `json:"count50,string"`
 	HitsMiss    int      `json:"countmiss,string"`
 	FullCombo   JSONBool `json:"perfect,string"`
-	EnabledMods string   `json:"enabled_mods"`
+	EnabledMods Mods     `json:"enabled_mods,string"`
 }

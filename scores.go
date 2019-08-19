@@ -18,12 +18,18 @@ type Score struct {
 
 // ScoresQuery is used to fetch the scores set for a specified beatmap.
 type ScoresQuery struct {
+	// REQUIRED - Specifies the beatmap to get scores from.
 	BeatmapID string
-	User      string
-	Mode      GameMode
-	Mods      int
-	Type      UserType
-	Limit     int
+	// OPTIONAL - Specifies a user to get score data for.
+	User string
+	// OPTIONAL - The game mode to get scores for.
+	Mode GameMode
+	// OPTIONAL - The scores to get with specific mods.
+	Mods int
+	// OPTIONAL - Specifies the type of value (username or user ID) passed into the User field.
+	Type UserType
+	// OPTIONAL - The amount of scores to get.
+	Limit int
 }
 
 // GetScores gets a list of scores for a specified beatmap.

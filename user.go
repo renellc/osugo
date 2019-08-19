@@ -3,6 +3,7 @@ package osugo
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/url"
 )
 
@@ -67,11 +68,30 @@ func (c OsuClient) GetUser(q UserQuery) (*User, error) {
 	return &users[0], nil
 }
 
+// Print prints to the console the user's information in a digestible format.
+func (u User) Print() {
+	fmt.Printf("User\n    Name: %s\n    ID: %s\n", u.Username, u.UserID)
+	fmt.Printf("Joined: %s\n", u.JoinDate)
+	fmt.Printf("Hits\n    300: %d\n    100: %d\n    50: %d\n", u.Hits300, u.Hits100, u.Hits50)
+	fmt.Printf("Play Count: %d\n", u.PlayCount)
+	fmt.Printf("Score\n    Ranked: %d\n    Total: %d\n", u.RankedScore, u.TotalScore)
+	fmt.Printf("Rank: %d\nPP: %f\nLevel: %f\n", u.Rank, u.PP, u.Level)
+	fmt.Printf("Accuracy: %f\n", u.Accuracy)
+	fmt.Printf("Letter Count\n    SS/SSH: %d/%d\n    S/SH: %d/%d\n    A: %d\n",
+		u.RankSSCount, u.RankSSHCount, u.RankSCount, u.RankSHCount, u.RankACount)
+	fmt.Printf("Country\n    Location: %s\n    Rank: %d\n", u.Country, u.CountryRank)
+	fmt.Printf("Total Seconds Played: %d\n", u.TotalSecondsPlayed)
+}
+
 // UserQuery is used to fetch user information.
 type UserQuery struct {
-	User      string
-	Mode      GameMode
-	Type      UserType
+	// REQUIRED - The user to get information from.
+	User string
+	// OPTIONAL - Specifies which game mode information to get from a user.
+	Mode GameMode
+	// OPTIONAL - Specifies the type of value (username or user ID) passed into the User field.
+	Type UserType
+	// OPTIONAL - Specifies the maximum number of days between now and the last event date.
 	EventDays int
 }
 

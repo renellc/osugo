@@ -14,11 +14,16 @@ type Replay struct {
 
 // ReplayQuery is used to fetch the replay data of a user's score.
 type ReplayQuery struct {
-	Mode      GameMode
+	// REQUIRED - The game mode the score was set on.
+	Mode GameMode
+	// REQUIRED - The beatmap ID from which the score was set.
 	BeatmapID string
-	User      string
-	Type      UserType
-	Mods      int
+	// REQUIRED - The user that set the score.
+	User string
+	// OPTIONAL - Specifies the type of value (username or user ID) passed into the User field.
+	Type UserType
+	// OPTIONAL - The score to get with specific mods.
+	Mods int
 }
 
 // GetReplay gets the replay data for a specified user on a specified beatmap.

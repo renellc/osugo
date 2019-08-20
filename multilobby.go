@@ -70,7 +70,20 @@ type MultiMatchScore struct {
 	LobbySlot int      `json:"slot,string"`
 	LobbyTeam int      `json:"team,string"`
 	DidPass   JSONBool `json:"pass,string"`
-	Score
+	// The fields below are from the Score struct. enabled_mods is is always null according to the
+	// wiki, so rather than rewriting the Score struct to accept null values, the fields that are
+	// relavent are just pasted here.
+	UserID    string   `json:"user_id"`
+	Score     int      `json:"score,string"`
+	MaxCombo  int      `json:"maxcombo,string"`
+	Rank      string   `json:"rank"`
+	HitsGeki  int      `json:"countgeki,string"`
+	HitsKatu  int      `json:"countkatu,string"`
+	Hits300   int      `json:"count300,string"`
+	Hits100   int      `json:"count100,string"`
+	Hits50    int      `json:"count50,string"`
+	HitsMiss  int      `json:"countmiss,string"`
+	FullCombo JSONBool `json:"perfect,string"`
 }
 
 // MultiLobbyQuery contains the various parameters used to get the data for a multiplayer lobby in

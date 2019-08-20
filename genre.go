@@ -1,4 +1,4 @@
-package osugof
+package osugo
 
 // Genre is an ID represents the genre a given song is categorized under.
 type Genre int

@@ -6,8 +6,9 @@ import (
 
 type ModValue int
 
+const ModNone ModValue = iota
+
 const (
-	ModNone   ModValue = 0
 	ModNoFail ModValue = 1 << iota
 	ModEasy
 	ModTouchDevice

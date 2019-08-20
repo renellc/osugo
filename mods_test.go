@@ -1,32 +1,54 @@
 package osugo_test
 
 import (
-	"flag"
+	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/renellc/osugo"
 )
 
-var key string
-
-func init() {
-	flag.StringVar(&key, "key", "", "API key")
-	flag.Parse()
-}
-
 func TestUnmarshalJSONIntoMods(t *testing.T) {
-	c := osugo.InitClient(key)
+	// Setup test cases
+	table := []struct {
+		Input  string
+		Output osugo.Mods
+	}{
+		{
+			Input:  fmt.Sprintf("{\"enabled_mods\": \"%d\"}", osugo.ModHardRock|osugo.ModHidden),
+			Output: osugo.Mods{"Hard Rock", "Hidden"},
+		},
+		{
+			Input:  fmt.Sprintf("{\"enabled_mods\": \"%d\"}", osugo.ModDoubleTime|osugo.ModNoFail|osugo.ModFlashlight),
+			Output: osugo.Mods{"No Fail", "Double Time", "Flashlight"},
+		},
+	}
 
-	scores, _ := c.GetBeatmapScores(osugo.ScoresQuery{
-		BeatmapID: "129891", // Freedom Dive
-		User:      "124493", // Cookiezi
-		Type:      osugo.ID,
-	})
+	for _, test := range table {
+		// Convert to bytes so we can unmarshal
+		data := []byte(test.Input)
+		out := struct {
+			EnabledMods osugo.Mods `json:"enabled_mods,string"`
+		}{}
+		err := json.Unmarshal(data, &out)
+		if err != nil {
+			t.Error(err)
+		}
 
-	m := map[string]bool{"Hidden": true, "Hard Rock": true}
-	for _, mod := range scores[0].EnabledMods {
-		if !m[mod] {
-			t.Errorf("Mod generated does not match desired output")
+		// Checks if the mods unmarshalled match the desired output for this test case.
+		m := createModMap(test.Output)
+		for _, mod := range out.EnabledMods {
+			if !m[mod] {
+				t.Error("Generated mod that does not match the desired output")
+			}
 		}
 	}
+}
+
+func createModMap(mods osugo.Mods) map[string]bool {
+	m := make(map[string]bool)
+	for _, mod := range mods {
+		m[mod] = true
+	}
+	return m
 }

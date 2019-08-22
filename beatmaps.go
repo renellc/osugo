@@ -1,5 +1,11 @@
 package osugo
 
+import (
+	"errors"
+	"net/url"
+	"time"
+)
+
 type Beatmap struct {
 	Status              int      `json:"approved,string"`
 	Submitted           string   `json:"submit_date"`
@@ -43,4 +49,83 @@ func (b Beatmap) GetStatusName() string {
 	names := []string{"Graveyard", "WIP", "Pending", "Ranked", "Approved", "Qualified", "Loved"}
 	// Graveyard starts at -2, so add 2 to get the slice index.
 	return names[b.Status+2]
+}
+
+// BeatmapQuery is used to get a list of beatmaps.
+type BeatmapQuery struct {
+	Since            time.Time
+	BeatmapSetID     string
+	BeatmapID        string
+	User             string
+	Type             UserType
+	Mode             GameMode
+	IncludeConverted bool
+	BeatmapHash      string
+	Limit            int
+	// Not entirely sure what this parameter is for... Tested a couple of calls to API adding a
+	// value to this parameter and it didn't change the response. If someone knows what this does,
+	// please tell me lol
+	Mods int
+}
+
+func (b BeatmapQuery) constructQuery(key string) (string, error) {
+	validateErr := b.validateQuery()
+	if validateErr != nil {
+		return "", nil
+	}
+
+	reqURL := url.Values{}
+	reqURL.Add("k", key)
+
+	if !b.Since.IsZero() {
+		since := b.Since.Format("2006-01-22 21:30:00")
+		reqURL.Add("since", since)
+	}
+
+	if b.BeatmapSetID != "" {
+		reqURL.Add("s", b.BeatmapSetID)
+	}
+
+	if b.BeatmapID != "" {
+		reqURL.Add("b", b.BeatmapID)
+	}
+
+	if b.User != "" {
+		reqURL.Add("u", b.User)
+	}
+
+	if b.Type != "" {
+		reqURL.Add("type", string(b.Type))
+	}
+
+	if b.Mode != Any {
+		reqURL.Add("m", string(b.Mode))
+	}
+
+	if b.IncludeConverted {
+		reqURL.Add("a", "true")
+	}
+
+	if b.BeatmapHash != "" {
+		reqURL.Add("h", b.BeatmapHash)
+	}
+
+	if b.Limit > 0 {
+		reqURL.Add("limit", string(b.Limit))
+	}
+
+	if b.Mods > 0 {
+		reqURL.Add("mods", string(b.Mods))
+	}
+
+	return reqURL.Encode(), nil
+}
+
+func (b BeatmapQuery) validateQuery() error {
+	var err error
+	if b.Limit < 1 || b.Limit > 500 {
+		err = errors.New("BeatmapQuery: limit value provided is invalid. " +
+			"Don't set value or set a value between 1 and 500")
+	}
+	return err
 }

@@ -16,7 +16,7 @@ const (
 	Any
 )
 
-// GetName gets the string represenation for a GameMode.
+// GetName gets the string representation for a GameMode.
 func (m GameMode) GetName() string {
 	modes := []string{"osu!", "Taiko", "Catch the Beat", "osu!mania"}
 	return modes[m]

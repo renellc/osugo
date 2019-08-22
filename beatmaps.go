@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/url"
+	"strconv"
 	"time"
 )
 
@@ -74,7 +75,7 @@ type BeatmapQuery struct {
 	BeatmapID        string
 	User             string
 	Type             UserType
-	Mode             GameMode
+	Mode             *GameMode
 	IncludeConverted bool
 	BeatmapHash      string
 	Limit            int
@@ -114,8 +115,8 @@ func (b BeatmapQuery) constructQuery(key string) (string, error) {
 		reqURL.Add("type", string(b.Type))
 	}
 
-	if b.Mode != Any {
-		reqURL.Add("m", string(b.Mode))
+	if b.Mode != nil && *b.Mode != Any {
+		reqURL.Add("m", strconv.Itoa(int(*b.Mode)))
 	}
 
 	if b.IncludeConverted {
@@ -127,11 +128,11 @@ func (b BeatmapQuery) constructQuery(key string) (string, error) {
 	}
 
 	if b.Limit > 0 {
-		reqURL.Add("limit", string(b.Limit))
+		reqURL.Add("limit", strconv.Itoa(b.Limit))
 	}
 
 	if b.Mods > 0 {
-		reqURL.Add("mods", string(b.Mods))
+		reqURL.Add("mods", strconv.Itoa(b.Mods))
 	}
 
 	return reqURL.Encode(), nil

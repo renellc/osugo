@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/url"
+	"strconv"
 )
 
 // BestScore represents a score in a user's top plays.
@@ -78,7 +79,7 @@ func (upq UserPerfQuery) constructQuery(key string) (string, error) {
 	reqURL.Add("m", string(upq.Mode))
 
 	if upq.Limit > 0 {
-		reqURL.Add("limit", string(upq.Limit))
+		reqURL.Add("limit", strconv.Itoa(upq.Limit))
 	}
 
 	if upq.Type != "" {

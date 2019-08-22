@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/url"
+	"strconv"
 )
 
 // BeatmapScore is a struct that contains osu! data for a given score.
@@ -63,7 +64,7 @@ func (s ScoresQuery) constructQuery(key string) (string, error) {
 	}
 
 	if s.Mode > 0 {
-		reqURL.Add("m", string(s.Mode))
+		reqURL.Add("m", strconv.Itoa(int(s.Mode)))
 	}
 
 	if s.Type != "" {
@@ -71,7 +72,7 @@ func (s ScoresQuery) constructQuery(key string) (string, error) {
 	}
 
 	if s.Limit > 0 {
-		reqURL.Add("limit", string(s.Limit))
+		reqURL.Add("limit", strconv.Itoa(s.Limit))
 	}
 
 	return reqURL.Encode(), nil

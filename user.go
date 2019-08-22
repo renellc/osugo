@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"strconv"
 )
 
 // Event is a struct that represents a recent event the user has done. This is related to a user
@@ -104,14 +105,14 @@ func (u UserQuery) constructQuery(key string) (string, error) {
 	reqURL := url.Values{}
 	reqURL.Add("k", key)
 	reqURL.Add("u", u.User)
-	reqURL.Add("m", string(u.Mode))
+	reqURL.Add("m", strconv.Itoa(int(u.Mode)))
 
 	if u.Type != "" {
 		reqURL.Add("type", string(u.Type))
 	}
 
 	if u.EventDays > 0 {
-		reqURL.Add("event_days", string(u.EventDays))
+		reqURL.Add("event_days", strconv.Itoa(u.EventDays))
 	}
 
 	return reqURL.Encode(), nil

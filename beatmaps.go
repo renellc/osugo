@@ -1,6 +1,7 @@
 package osugo
 
 import (
+	"encoding/json"
 	"errors"
 	"net/url"
 	"time"
@@ -49,6 +50,21 @@ func (b Beatmap) GetStatusName() string {
 	names := []string{"Graveyard", "WIP", "Pending", "Ranked", "Approved", "Qualified", "Loved"}
 	// Graveyard starts at -2, so add 2 to get the slice index.
 	return names[b.Status+2]
+}
+
+func (c OsuClient) GetBeatmaps(q BeatmapQuery) ([]Beatmap, error) {
+	res, err := c.sendRequest("get_beatmaps", q)
+	if err != nil {
+		return nil, err
+	}
+
+	maps := []Beatmap{}
+	jErr := json.Unmarshal(res, &maps)
+	if jErr != nil {
+		return nil, jErr
+	}
+
+	return maps, nil
 }
 
 // BeatmapQuery is used to get a list of beatmaps.

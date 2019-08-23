@@ -17,8 +17,8 @@ type BeatmapScore struct {
 	Score
 }
 
-// ScoresQuery is used to fetch the scores set for a specified beatmap.
-type ScoresQuery struct {
+// BeatmapScoresQuery is used to fetch the scores set for a specified beatmap.
+type BeatmapScoresQuery struct {
 	// REQUIRED - Specifies the beatmap to get scores from.
 	BeatmapID string
 	// OPTIONAL - Specifies a user to get score data for.
@@ -34,7 +34,7 @@ type ScoresQuery struct {
 }
 
 // GetBeatmapScores gets a list of scores for a specified beatmap.
-func (c OsuClient) GetBeatmapScores(q ScoresQuery) ([]BeatmapScore, error) {
+func (c OsuClient) GetBeatmapScores(q BeatmapScoresQuery) ([]BeatmapScore, error) {
 	res, err := c.sendRequest("get_scores", q)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (c OsuClient) GetBeatmapScores(q ScoresQuery) ([]BeatmapScore, error) {
 	return scores, nil
 }
 
-func (s ScoresQuery) constructQuery(key string) (string, error) {
+func (s BeatmapScoresQuery) constructQuery(key string) (string, error) {
 	validateErr := s.validateQuery()
 	if validateErr != nil {
 		return "", validateErr
@@ -78,19 +78,19 @@ func (s ScoresQuery) constructQuery(key string) (string, error) {
 	return reqURL.Encode(), nil
 }
 
-func (s ScoresQuery) validateQuery() error {
+func (s BeatmapScoresQuery) validateQuery() error {
 	var err error
 
 	if s.BeatmapID == "" {
-		err = errors.New("ScoresQuery: No BeatmapID value provided")
+		err = errors.New("BeatmapScoresQuery: No BeatmapID value provided")
 	}
 
 	if s.Mode > 3 {
-		err = errors.New("ScoresQuery: GameMode provided is not supported by this query")
+		err = errors.New("BeatmapScoresQuery: GameMode provided is not supported by this query")
 	}
 
 	if s.Limit < 0 || s.Limit > 100 {
-		err = errors.New("ScoresQuery: Limit value provided is invalid. Either leave the Limit " +
+		err = errors.New("BeatmapScoresQuery: Limit value provided is invalid. Either leave the Limit " +
 			"field blank or enter a value between 1 and 100")
 	}
 

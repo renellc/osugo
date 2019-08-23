@@ -89,6 +89,7 @@ type MultiMatchScore struct {
 // MultiLobbyQuery contains the various parameters used to get the data for a multiplayer lobby in
 // osu!.
 type MultiLobbyQuery struct {
+	// REQUIRED - Specifies the multiplayer match ID to get data from.
 	LobbyID string
 }
 

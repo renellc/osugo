@@ -70,15 +70,29 @@ func (c OsuClient) GetBeatmaps(q BeatmapQuery) ([]Beatmap, error) {
 
 // BeatmapQuery is used to get a list of beatmaps.
 type BeatmapQuery struct {
-	Since            time.Time
-	BeatmapSetID     string
-	BeatmapID        string
-	User             string
-	Type             UserType
-	Mode             *GameMode
+	// OPTIONAL - Specifies what beatmaps to return based on their rank/loved date.
+	Since time.Time
+	// OPTIONAL - Specifies the ID belonging to Beatmap set to return results from.
+	BeatmapSetID string
+	// OPTIONAL - Specifies the ID belonging Beatmap to return results from.
+	BeatmapID string
+	// OPTIONAL - Specifies the username or ID belonging to a User. This will return the beatmaps
+	// created by this User.
+	User string
+	// OPTIONAL - Specifies whether the value passed into User was a username or an ID.
+	Type UserType
+	// OPTIONAL - Specifies the game mode for the beatmaps. Returns only beatmaps that are of this
+	// game mode.
+	Mode *GameMode
+	// OPTIONAL - Specifies whether or not converted beatmaps are included in the results. These
+	// results show their converted difficulty rating. Defaults to false.
 	IncludeConverted bool
-	BeatmapHash      string
-	Limit            int
+	// OPTIONAL - Specifies the Beatmap hash. Useful for getting a beatmap from a replay since osu!
+	// replays only provide the Beatmap hash.
+	BeatmapHash string
+	// OPTIONAL - Specifies the amount of results to return from the GET request. Defaults to 500,
+	// maximum value is 500.
+	Limit int
 	// Not entirely sure what this parameter is for... Tested a couple of calls to API adding a
 	// value to this parameter and it didn't change the response. If someone knows what this does,
 	// please tell me lol

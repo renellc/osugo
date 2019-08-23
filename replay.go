@@ -65,15 +65,15 @@ func (r ReplayQuery) validateQuery() error {
 	var err error
 
 	if r.Mode > Mania {
-		err = errors.New("GameMode provided is not supported by this query")
+		err = errors.New("ReplayQuery: GameMode provided is not supported by this query")
 	}
 
 	if r.BeatmapID == "" {
-		err = errors.New("No BeatmapID value was provided")
+		err = errors.New("ReplayQuery: No BeatmapID value was provided")
 	}
 
 	if r.User == "" {
-		err = errors.New("No user value was provided")
+		err = errors.New("ReplayQuery: No user value was provided")
 	}
 
 	return err

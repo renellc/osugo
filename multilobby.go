@@ -38,7 +38,7 @@ type MatchInfo struct {
 }
 
 // MultiGame contains the information for a single game that is played within a multiplayer lobby
-// in osu!. This means it containsinformation for the game as well as all the scores set by each of
+// in osu!. This means it contains information for the game as well as all the scores set by each of
 // the players in the lobby.
 type MultiGame struct {
 	GameID      string            `json:"game_id"`
@@ -72,7 +72,7 @@ type MultiMatchScore struct {
 	DidPass   JSONBool `json:"pass,string"`
 	// The fields below are from the Score struct. enabled_mods is is always null according to the
 	// wiki, so rather than rewriting the Score struct to accept null values, the fields that are
-	// relavent are just pasted here.
+	// relevant are just pasted here.
 	UserID    string   `json:"user_id"`
 	Score     int      `json:"score,string"`
 	MaxCombo  int      `json:"maxcombo,string"`
@@ -106,7 +106,7 @@ func (m MultiLobbyQuery) constructQuery(key string) (string, error) {
 
 func (m MultiLobbyQuery) validateQuery() error {
 	if m.LobbyID == "" {
-		return errors.New("No match ID value provided")
+		return errors.New("MultiLobbyQuery: No match ID value provided")
 	}
 	return nil
 }

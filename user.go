@@ -51,7 +51,7 @@ func (c OsuClient) GetUser(q UserQuery) (*User, error) {
 		return nil, err
 	}
 
-	users := []User{}
+	var users []User
 	jErr := json.Unmarshal(res, &users)
 	if jErr != nil {
 		return nil, jErr
@@ -122,16 +122,16 @@ func (u UserQuery) validateQuery() error {
 	var err error
 
 	if u.User == "" {
-		err = errors.New("User value must be provided")
+		err = errors.New("UserQuery: User value must be provided")
 	}
 
 	if u.Mode > 3 {
-		err = errors.New("GameMode provided is not supported by this query")
+		err = errors.New("UserQuery: GameMode provided is not supported by this query")
 	}
 
 	if u.EventDays < 0 || u.EventDays > 31 {
-		err = errors.New("EventDays value not valid. Either leave EventDays blank or set a value" +
-			"between 1 and 31")
+		err = errors.New("UserQuery: EventDays value not valid. Either leave EventDays blank or" +
+			" set a value between 1 and 31")
 	}
 
 	return err

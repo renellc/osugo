@@ -40,7 +40,7 @@ func (c OsuClient) GetBeatmapScores(q ScoresQuery) ([]BeatmapScore, error) {
 		return nil, err
 	}
 
-	scores := []BeatmapScore{}
+	var scores []BeatmapScore
 	jErr := json.Unmarshal(res, &scores)
 	if jErr != nil {
 		return nil, jErr
@@ -82,16 +82,16 @@ func (s ScoresQuery) validateQuery() error {
 	var err error
 
 	if s.BeatmapID == "" {
-		err = errors.New("No BeatmapID value provided")
+		err = errors.New("ScoresQuery: No BeatmapID value provided")
 	}
 
 	if s.Mode > 3 {
-		err = errors.New("GameMode provided is not supported by this query")
+		err = errors.New("ScoresQuery: GameMode provided is not supported by this query")
 	}
 
 	if s.Limit < 0 || s.Limit > 100 {
-		err = errors.New("Limit value provided is invalid. Either leave the Limit field blank or " +
-			"enter a value between 1 and 100")
+		err = errors.New("ScoresQuery: Limit value provided is invalid. Either leave the Limit " +
+			"field blank or enter a value between 1 and 100")
 	}
 
 	return err

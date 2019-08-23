@@ -19,7 +19,8 @@ func TestUnmarshalJSONIntoMods(t *testing.T) {
 			Output: osugo.Mods{"Hard Rock", "Hidden"},
 		},
 		{
-			Input:  fmt.Sprintf("{\"enabled_mods\": \"%d\"}", osugo.ModDoubleTime|osugo.ModNoFail|osugo.ModFlashlight),
+			Input: fmt.Sprintf("{\"enabled_mods\": \"%d\"}",
+				osugo.ModDoubleTime|osugo.ModNoFail|osugo.ModFlashlight),
 			Output: osugo.Mods{"No Fail", "Double Time", "Flashlight"},
 		},
 	}
@@ -35,7 +36,7 @@ func TestUnmarshalJSONIntoMods(t *testing.T) {
 			t.Error(err)
 		}
 
-		// Checks if the mods unmarshalled match the desired output for this test case.
+		// Checks if the mods generated match the desired output for this test case.
 		m := createModMap(test.Output)
 		for _, mod := range out.EnabledMods {
 			if !m[mod] {

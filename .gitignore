@@ -12,5 +12,5 @@
 *.out
 
 # Editor and IDE
-.vscode
-.idea
+.vscode/
+.idea/

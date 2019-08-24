@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/url"
+	"strconv"
 )
 
 // Replay is a struct that contains the data of an osu! replay file.
@@ -23,7 +24,9 @@ type ReplayQuery struct {
 	// OPTIONAL - Specifies the type of value (username or user ID) passed into the User field.
 	Type UserType
 	// OPTIONAL - The score to get with specific mods.
-	Mods int
+	// This is a pointer value because mods aren't applied to the GET request (with the exception)
+	// of GetBeatmaps.
+	Mods *int
 }
 
 // GetReplay gets the replay data for a specified user on a specified beatmap.
@@ -56,6 +59,10 @@ func (r ReplayQuery) constructQuery(key string) (string, error) {
 
 	if r.Type != "" {
 		q.Add("type", string(r.Type))
+	}
+
+	if r.Mods != nil {
+		q.Add("mods", strconv.Itoa(*r.Mods))
 	}
 
 	return q.Encode(), nil

@@ -26,8 +26,10 @@ type BeatmapScoresQuery struct {
 	// OPTIONAL - The game mode to get scores for.
 	Mode GameMode
 	// OPTIONAL - The scores to get with specific mods.
-	Mods int
+	Mods *int
 	// OPTIONAL - Specifies the type of value (username or user ID) passed into the User field.
+	// This is a pointer value because mods aren't applied to the GET request (with the exception)
+	// of GetBeatmaps.
 	Type UserType
 	// OPTIONAL - The amount of scores to get.
 	Limit int
@@ -65,6 +67,10 @@ func (s BeatmapScoresQuery) constructQuery(key string) (string, error) {
 
 	if s.Mode > 0 {
 		reqURL.Add("m", strconv.Itoa(int(s.Mode)))
+	}
+
+	if s.Mods != nil {
+		reqURL.Add("mods", strconv.Itoa(*s.Mods))
 	}
 
 	if s.Type != "" {

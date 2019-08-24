@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// OsuClient acts as a middleman between the client making the requests and the API server.
 type OsuClient struct {
 	apiKey string
 	client *http.Client

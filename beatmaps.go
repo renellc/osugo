@@ -145,6 +145,8 @@ func (b BeatmapQuery) constructQuery(key string) (string, error) {
 		reqURL.Add("limit", strconv.Itoa(b.Limit))
 	}
 
+	// The get_beatmaps endpoint defaults this parameter to 0, unlike the other endpoints that
+	// don't use the parameter if it isn't provided (according to the wiki anyways).
 	if b.Mods > 0 {
 		reqURL.Add("mods", strconv.Itoa(b.Mods))
 	}

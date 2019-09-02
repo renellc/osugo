@@ -25,7 +25,7 @@ import "github.com/renellc/osugo"
 
 func main() {
     c := osugo.InitClient("your-osu-api-key-goes-here")
-    user, err := c.GetUser(UserBestQuery{
+    user, err := c.GetUser(UserQuery{
         User: "nathan on osu" // user IDs are valid as well
     })
 
